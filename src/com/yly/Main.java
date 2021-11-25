@@ -1,6 +1,10 @@
 package com.yly;
 
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 /**
  * 时间统计
@@ -10,6 +14,7 @@ import java.util.Random;
  * 快速排序 200ms
  * 希尔排序 350ms
  * 堆排序 250ms
+ * forkjoin 300ms浮动
  */
 public class Main {
 
@@ -19,9 +24,30 @@ public class Main {
 //        testMergeSort();
 //        testInsertSort();
 //        testBubbleSort();
-        testQuickSort();
+//        testQuickSort();
 //        testShellSort();
 //        testHeapSort();
+//        forkJoin();
+    }
+
+    private static void forkJoin() {
+        long start = System.currentTimeMillis();
+        int[] randomData = new int[NUM];
+        for (int i = 0; i < randomData.length; i++) {
+            randomData[i] = new Random().nextInt(randomData.length);
+        }
+//        Arrays.stream(randomData).parallel().sorted().collect(
+//                ArrayList::new,
+//                ArrayList::add,
+//                ArrayList::addAll);
+        randomData = Arrays.stream(randomData).parallel().sorted().toArray();
+        for (int i = 0; i < randomData.length - 1; i++) {
+            if (randomData[i] > randomData[i + 1]) {
+                System.out.println("error");
+                break;
+            }
+        }
+        System.out.println(System.currentTimeMillis() - start);
     }
 
     private static void testHeapSort() {
